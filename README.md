@@ -24,4 +24,4 @@ Data should be presented as a python dictionary with the following keys:
 
 # GUI explanation
 
-![Interface](https://github.com/Alegre-Cortes/Rest-Test/interface.png)
+![Interface](https://github.com/Alegre-Cortes/Rest-Test/blob/main/Interface.PNG)
