@@ -25,3 +25,13 @@ Data should be presented as a python dictionary with the following keys:
 # GUI explanation
 
 ![Interface](https://github.com/Alegre-Cortes/Rest-Test/blob/main/Interface.PNG)
+
+* **Load data**: Loads the dataset/parameters + labels dictionary
+* **Features to plot**:
+* **Dimensions to use for classification**:
+* **Trace(s) to plot**:
+* **PCA**:
+* **tSNE**:
+* **Classify**:
+* **Recursive Feature Extraction**:
+* **Plot trace**:
