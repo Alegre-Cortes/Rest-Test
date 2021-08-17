@@ -12,17 +12,19 @@ sklearn
 
 ## Summary 
 
-Rest&Test is a light interface to explore the parametrization of a dataset. You can either load your owns parameters + labels, or a matrix of time series, in which case the parameters extracted in [this paper](https://elifesciences.org/articles/60580) will be used. They are directed to characterize intracellular recordings of Slow Wave Oscillation, so they may not be of use in many situations. The function to extract the parameters *core_functions.compute_parameters* can be easily substituted to add your own feature extraction to the pipeline.
+Rest&Test is a light interface to explore the parametrization of a dataset. You can either load your owns parameters + labels, or a matrix of time series. In the last case, you need to provide a feature extraction pipeline to fill the function *core_functions.compute_parameters*.
 
-By default, the used classifier is a Gaussian Proccess with a radial-basis function ernel. If another classifier is prefered, it can be easily substituted in *core_functions*.
+By default, the used classifier is a Gaussian Proccess with a radial-basis function kernel. If another classifier is prefered, it can be easily substituted in *core_functions*.
 
 ## Required data format
 
 Data should be presented as a python dictionary with the following keys:
 
-['Labels'], which includes the labels that will be used for the suppervised classification
+['Labels'], which includes the labels that will be used for the suppervised classification.
 
-['Data'] **OR** ['Parameters'], depending whether we want to load a dataset or a set of parameters
+['Data'] **OR** ['Parameters'], depending whether we want to load a dataset or a set of parameters.
+
+Note that it is necessary to add the ['Labels'] key, otherwise the GUI will not work.
 
 ## GUI explanation
 
