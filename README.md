@@ -1,2 +1,12 @@
 # Rest-Test
-Light interface for the featurization and supervised classification of datasets
+Light interface with a collection of basic tools to explore datasets
+
+**Dependencies**
+
+PyQt5,
+numpy,
+matplotlib,
+scipy,
+umap-learn,
+sklearn
+
