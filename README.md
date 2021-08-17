@@ -23,3 +23,5 @@ Data should be presented as a python dictionary with the following keys:
 ['Data'] **OR** ['Parameters'], depending whether we want to load a dataset or a set of parameters
 
 # GUI explanation
+
+![Interface](https://github.com/Alegre-Cortes/Rest-Test/interface.png)
