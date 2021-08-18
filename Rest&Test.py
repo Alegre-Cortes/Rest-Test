@@ -24,9 +24,7 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 270, 191, 20))
-        self.lineEdit.setObjectName("lineEdit")
+
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(10, 240, 141, 23))
         self.pushButton.setObjectName("pushButton")
@@ -98,11 +96,11 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.tsne_fcn)
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "NekoStats"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Rest & Test"))
         self.label.setText(_translate("MainWindow", "Rest&Test"))
         self.pushButton.setText(_translate("MainWindow", "Load data"))
         self.statsBtn.setText(_translate("MainWindow", "PCA"))
-        self.layerBtn.setText(_translate("MainWindow", "Recursive Feature Extraction"))
+        self.layerBtn.setText(_translate("MainWindow", "RFE"))
         self.classifyBtn.setText(_translate("MainWindow", "Classify"))
         self.label_2.setText(_translate("MainWindow", "TextLabel"))
         self.TraceEdit.setText(_translate("MainWindow", "1"))
@@ -112,7 +110,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Features to plot"))
         self.featBtn.setText(_translate("MainWindow", "Plot"))
         self.pushButton_2.setText(_translate("MainWindow", "tSNE"))
-        self.label_6.setText(_translate("MainWindow", "Feature extraction and supervised classification of time series"))
+        self.label_6.setText(_translate("MainWindow", "For parameters exploration and classification"))
 
 
     def load_data_fcn(self, btn):
@@ -143,9 +141,9 @@ class Ui_MainWindow(object):
             ax.scatter(parameters[np.where(layer[0]==1)[0],relevance[0]],parameters[np.where(layer[0]==1)[0],relevance[1]],parameters[np.where(layer[0]==1)[0],relevance[2]])
             ax.scatter(parameters[np.where(layer[0]==2)[0],relevance[0]],parameters[np.where(layer[0]==2)[0],relevance[1]],parameters[np.where(layer[0]==2)[0],relevance[2]])
             ax.text(0, 0, 0, ('%.2f' % score).lstrip('0'), size=15,horizontalalignment='right', verticalalignment='center')
-            plt.xlabel('Feature ' + str(relevance[0]))
-            plt.ylabel('Feature ' + str(relevance[1]))
-            plt.zlabel('Feature ' + str(relevance[2]))
+            ax.set_xlabel('Feature ' + str(relevance[0]))
+            ax.set_ylabel('Feature ' + str(relevance[1]))
+            ax.set_zlabel('Feature ' + str(relevance[2]))
     def pca_fcn(self, btn):
             from mpl_toolkits.mplot3d import Axes3D
             global components, var_ratio
