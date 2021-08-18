@@ -37,5 +37,5 @@ Note that it is necessary to add the ['Labels'] key, otherwise the GUI will not 
 * _**PCA**: Performs PCA_: using the loaded parameters, returns the explained variance, a visualization of the 3 first PC and a tag with the accuray in the classification.
 * _**tSNE**_: Performs tSNE using the loaded paramters, returns the 2D tSNE space, the trained GP and the accuracy of classification.
 * _**Classify**_: Performs supervised classification using the features selected, shows the confusion matrix.
-* _**Recursive Feature Extraction**_: Performs Recursive Feature Elimination analysis, returns the order of features in the workspace and plots the 3 first parameters with a tag indicating the accuracy.
+* _**Recursive Feature Extraction**_: Performs Recursive Feature Elimination analysis using a SVM with a linear kernel, returns the order of features in the workspace and plots the 3 first parameters with a tag indicating the accuracy.
 * _**Plot trace**_: Plots the indicated time series.
