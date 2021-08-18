@@ -20,9 +20,9 @@ By default, the used classifier is a Gaussian Proccess with a radial-basis funct
 
 Data should be presented as a python dictionary with the following keys:
 
-['Labels'], which includes the labels that will be used for the suppervised classification.
+['Labels'], which includes the labels that will be used for the suppervised classification. It has shape [1,n_samples]
 
-['Data'] **OR** ['Parameters'], depending whether we want to load a dataset or a set of parameters.
+['Data'] **OR** ['Parameters'], depending whether we want to load a dataset or a set of parameters. It has shape [n_samples,parameters/time_samples]
 
 Note that it is necessary to add the ['Labels'] key, otherwise the GUI will not work.
 
