@@ -7,56 +7,41 @@ Created on Mon Apr 15 13:07:30 2019
 from scipy.signal import find_peaks 
 from scipy.stats import zscore
 import numpy as np
+import matplotlib.pyplot as plt
+from PyQt5 import QtCore, QtGui, QtWidgets
+from sklearn.feature_selection import RFE
+from sklearn.svm import SVC
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.gaussian_process.kernels import RBF, DotProduct
+from sklearn.metrics import confusion_matrix
+from matplotlib.colors import ListedColormap
+from sklearn.manifold import TSNE
+
 def load_data():
-#def load_data(self, btn):
-#    global dataset, fileName
-    print('Hello word')
-    from PyQt5 import QtCore, QtGui, QtWidgets
-    # import scipy.io as sio
+# Function to load the labels + Time series/Parameters
     options = QtWidgets.QFileDialog.Options() 
     options |= QtWidgets.QFileDialog.DontUseNativeDialog 
     fileName,_ = QtWidgets.QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()","", options=options)
     fileName
     aux = np.load(fileName,allow_pickle=True)
     aux = aux.item()
+    np.disp('Hello')
     layer = aux['Labels']
     if ('Data' in aux):
         dataset = aux['Data']
-        parameters = compute_parameters(dataset, layer)
-    elif ('Parameters' in aux):
+        parameters = compute_parameters(dataset, layer)               
+    if ('Parameters' in aux):
         parameters = aux['Parameters']
-        dataset = 'No dataset was loaded'
+        print('testing')
+        dataset = []
     print(np.shape(dataset))
-
     return dataset, parameters, fileName, layer
 
 
-def smooth(x,window_len=11,window='flat'):
-    """smooth the data using a window with requested size.
 
-    input:
-        x: the input signal 
-        window_len: the dimension of the smoothing window; should be an odd integer
-        window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
-            flat window will produce a moving average smoothing.
-
-    """
-
-    s=np.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
-    #print(len(s))
-    if window == 'flat': #moving average
-        w=np.ones(window_len,'d')
-    else:
-        w=eval('np.'+window+'(window_len)')
-
-    y=np.convolve(w/w.sum(),s,mode='valid')
-    return y
-
-def ComputeD2USpeed_ind_UP(Transition):
-      TimeWindow = np.arange(np.size(Transition))+1
-      S,p = np.polyfit(TimeWindow,Transition,1)
-      Slope = S
-      return Slope*20000
 
 
 def compute_parameters(dataset, layer):
@@ -67,12 +52,11 @@ def compute_parameters(dataset, layer):
        
 
 def rfe(parameters, layer):
-      from sklearn.feature_selection import RFE
-      from sklearn.svm import SVC
+# Performs Recursive Feature Elimination, stopping with the 3 most useful, and using a SVC
+# with a linear kernel    
       estimator = SVC(kernel="linear", C=1)
       selector = RFE(estimator, 3, step=1)
       [a,b] = np.shape(parameters)
-
       selector = selector.fit(parameters[:,:b-1], np.transpose(layer))
       selector.support_ 
       selector.ranking_
@@ -81,7 +65,7 @@ def rfe(parameters, layer):
       return relevance
 
 def perf_pca(parameters):
-      from sklearn.decomposition import PCA
+# Performs a PCA, displays explained variance and space of the 3 first PC
       pca = PCA()
       [a,b] = np.shape(parameters)
       pca.fit(parameters[:,:b-1])
@@ -90,12 +74,8 @@ def perf_pca(parameters):
       return components, var_ratio
 
 def GPC_classify(parameters, layer):
-      from sklearn.model_selection import train_test_split
-      from sklearn.gaussian_process import GaussianProcessClassifier
-      from sklearn.metrics import accuracy_score
-      from sklearn.gaussian_process.kernels import RBF, DotProduct
-      from sklearn.metrics import accuracy_score
-      
+# Classification based on the selected parameters, based on Gaussian Process
+     
       X = parameters      
       y = layer
       X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
@@ -107,12 +87,8 @@ def GPC_classify(parameters, layer):
 
 
 def plot_confusion_matrix(parameters, layer, dimensions):
-      from sklearn.model_selection import train_test_split
-      from sklearn.gaussian_process import GaussianProcessClassifier
-      from sklearn.metrics import accuracy_score
-      from sklearn.metrics import confusion_matrix
-      from sklearn.gaussian_process.kernels import RBF, DotProduct
-      from sklearn.metrics import accuracy_score
+# Plots the confusion matrix
+
 
 
       cmap=plt.cm.Blues
@@ -123,23 +99,16 @@ def plot_confusion_matrix(parameters, layer, dimensions):
       clf = GaussianProcessClassifier(kernel=kernel, warm_start=True).fit(X_train, y_train)
       a = clf.predict(X_test)   
       score = accuracy_score(y_test,a)
-
       cm = confusion_matrix(y_test, a)
-    # Only use the labels that appear in the data
-
-
       fig, ax = plt.subplots()
       im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
       ax.figure.colorbar(im, ax=ax)
-    # We want to show all ticks...
       ax.set(xticks=np.arange(cm.shape[1]),
            yticks=np.arange(cm.shape[0]),
-           # ... and label them with the respective list entries
            title='Confusion matrix',
            ylabel='True label',
            xlabel='Predicted label')
 
-    # Rotate the tick labels and set their alignment.
       plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
              rotation_mode="anchor")
 
@@ -155,12 +124,8 @@ def plot_confusion_matrix(parameters, layer, dimensions):
       return ax, score
 
 def display_features(parameters,layer,features):
+# After choosing 2 parameters, plots them + the result of training a GP on them
 
-          from sklearn.model_selection import train_test_split
-          from sklearn.gaussian_process import GaussianProcessClassifier
-          from sklearn.gaussian_process.kernels import RBF, DotProduct
-          from sklearn.metrics import accuracy_score
-          from matplotlib.colors import ListedColormap
           plt.figure()
           ax = plt.subplot(111)
           
@@ -193,14 +158,8 @@ def display_features(parameters,layer,features):
           return
     
 def perform_tsne(parameters, layer):
-      from matplotlib.colors import ListedColormap
+# Perform tSNE and use the resulting space to train a GP
 
-
-      from sklearn.manifold import TSNE
-      from sklearn.model_selection import train_test_split
-      from sklearn.gaussian_process import GaussianProcessClassifier
-      from sklearn.gaussian_process.kernels import RBF, DotProduct
-      from sklearn.metrics import accuracy_score
       x = parameters
       y = np.squeeze(layer)
       yy = TSNE(n_components=2).fit_transform(x)

@@ -116,8 +116,6 @@ class Ui_MainWindow(object):
     def load_data_fcn(self, btn):
           global dataset, fileName, parameters, layer
           dataset, parameters, fileName, layer = core_functions.load_data()
-          self.lineEdit.setText(fileName)
-          # parameters = core_functions.compute_parameters(dataset, layer)
           plt.figure()
           manager = plt.get_current_fig_manager()
           manager.window.showMaximized()
@@ -194,11 +192,6 @@ class Ui_MainWindow(object):
           features = [int(x) for x in features.split(' ')]
           features = np.array(features) 
           core_functions.display_features(parameters,layer,features)
-# =============================================================================
-#           self.varAxis.plot(parameters[layer==1,features[0]],parameters[layer==1,features[1]],'ob')
-#           self.varAxis.plot(parameters[layer==2,features[0]],parameters[layer==2,features[1]],'or')
-#           self.draw()
-# =============================================================================
           return features
 
     def tsne_fcn(self,btn):
